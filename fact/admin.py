@@ -12,7 +12,13 @@ class TaskAdmin(admin.ModelAdmin):
                    'delivered', 'delivered_datetime']
 
 
+@admin.register(PR)
+class PRAdmin(admin.ModelAdmin):
+    ordering = ['pr_number']
+    search_fields = ['pr_number']
+    list_filter = ['type', 'sent', 'merged', 'rolled_back', 'still_open']
+
+
 admin.site.register(TaskType)
 admin.site.register(TaskCreator)
 admin.site.register(PRType)
-admin.site.register(PR)

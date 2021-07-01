@@ -53,10 +53,13 @@ class Task(models.Model):
     def __str__(self):
         return str(self.sprint) + ' - Task ' + str(self.task_number) + ' - ' + str(self.type)
 
+    def get_task_number(self):
+        return self.task_number
+
 
 class PR(models.Model):
     pr_number = models.IntegerField(primary_key=True)
-    task = models.ForeignKey(Task, null=True, default=None, on_delete=models.CASCADE)
+    task = models.ManyToManyField(Task)
     type = models.ForeignKey(PRType, null=True, default=None, on_delete=models.CASCADE)
     sent = models.BooleanField(default=True)
     merged = models.BooleanField(default=False)
@@ -64,4 +67,7 @@ class PR(models.Model):
     still_open = models.BooleanField(default=False)
 
     def __str__(self):
-        return 'PR ' + str(self.pr_number) + ' Type: ' + str(self.type) + ' Task: ' + str(self.task)
+        tasks = Task(self.task.all()).get_task_number()
+
+        return 'PR ' + str(self.pr_number) + ' Type: ' + str(self.type) + ' Task: ' + \
+               str(list(tasks))
