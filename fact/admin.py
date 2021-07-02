@@ -16,7 +16,7 @@ class TaskAdmin(admin.ModelAdmin):
 class PRAdmin(admin.ModelAdmin):
     ordering = ['pr_number']
     search_fields = ['pr_number']
-    list_filter = ['type', 'sent', 'merged', 'rolled_back', 'still_open']
+    list_filter = ['task__sprint', 'type', 'sent', 'merged', 'rolled_back', 'still_open']
 
 
 admin.site.register(TaskType)
