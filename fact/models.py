@@ -1,9 +1,5 @@
-from django.contrib import admin
 from django.db import models
-from django.utils import timezone
 
-
-# Create your models here.
 
 class Sprint(models.Model):
     sprint_number = models.IntegerField(primary_key=True)
@@ -35,6 +31,13 @@ class PRType(models.Model):
         return self.pr_type
 
 
+class Responsable(models.Model):
+    name = models.CharField(unique=True, max_length=25)
+
+    def __str__(self):
+        return self.name
+
+
 class Task(models.Model):
     task_number = models.IntegerField(primary_key=True)
     task_url = models.TextField(unique=True, default='None')
@@ -60,9 +63,11 @@ class Task(models.Model):
 class PR(models.Model):
     pr_number = models.IntegerField(primary_key=True)
     task = models.ManyToManyField(Task)
+    responsable = models.ForeignKey(Responsable, null=True, default=None, on_delete=models.CASCADE)
     type = models.ForeignKey(PRType, null=True, default=None, on_delete=models.CASCADE)
     sent = models.BooleanField(default=True)
     merged = models.BooleanField(default=False)
+    closed = models.BooleanField(default=False)
     rolled_back = models.BooleanField(default=False)
     still_open = models.BooleanField(default=False)
 
@@ -70,4 +75,4 @@ class PR(models.Model):
         tasks = Task(self.task.all()).get_task_number()
 
         return 'PR ' + str(self.pr_number) + ' Type: ' + str(self.type) + ' Task: ' + \
-               str(list(tasks))
+               str(list(tasks)) + ' Creator: ' + str(self.responsable)
