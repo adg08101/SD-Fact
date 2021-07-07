@@ -70,6 +70,7 @@ class PR(models.Model):
     closed = models.BooleanField(default=False)
     rolled_back = models.BooleanField(default=False)
     still_open = models.BooleanField(default=False)
+    send_datetime = models.DateTimeField(null=True, default=None, blank=True)
 
     def __str__(self):
         tasks = Task(self.task.all()).get_task_number()
