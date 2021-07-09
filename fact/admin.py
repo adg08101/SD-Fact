@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Sprint, Task, TaskType, TaskCreator, PRType, PR, Responsable
+from .models import Sprint, Task, TaskType, TaskCreator, PRType, PR, Responsable, PointingEnvironments
 
 
 @admin.register(Task)
@@ -13,7 +13,7 @@ class TaskAdmin(admin.ModelAdmin):
 @admin.register(PR)
 class PRAdmin(admin.ModelAdmin):
     ordering = ['pr_number']
-    search_fields = ['pr_number']
+    search_fields = ['pr_number', 'task__task_number']
     list_filter = ['task__sprint', 'type', 'responsable', 'sent', 'closed', 'merged', 'rolled_back', 'still_open']
 
 
@@ -22,3 +22,4 @@ admin.site.register(TaskCreator)
 admin.site.register(PRType)
 admin.site.register(Sprint)
 admin.site.register(Responsable)
+admin.site.register(PointingEnvironments)

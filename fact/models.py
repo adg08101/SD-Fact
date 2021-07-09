@@ -60,14 +60,23 @@ class Task(models.Model):
         return self.task_number
 
 
+class PointingEnvironments(models.Model):
+    point = models.CharField(unique=True, max_length=25)
+
+    def __str__(self):
+        return self.point
+
+
 class PR(models.Model):
     pr_number = models.IntegerField(primary_key=True)
     task = models.ManyToManyField(Task)
     responsable = models.ForeignKey(Responsable, null=True, default=None, on_delete=models.CASCADE)
     type = models.ForeignKey(PRType, null=True, default=None, on_delete=models.CASCADE)
+    point = models.ForeignKey(PointingEnvironments, null=True, default=1, on_delete=models.CASCADE)
     sent = models.BooleanField(default=True)
     merged = models.BooleanField(default=False)
     closed = models.BooleanField(default=False)
+    note = models.TextField(null=True, blank=True)
     rolled_back = models.BooleanField(default=False)
     still_open = models.BooleanField(default=False)
     send_datetime = models.DateTimeField(null=True, default=None, blank=True)
